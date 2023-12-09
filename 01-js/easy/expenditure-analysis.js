@@ -6,7 +6,16 @@
 */
 
 function calculateTotalSpentByCategory(transactions) {
-  return [];
+  return transactions.reduce((result, transaction) => {
+    const { category, price } = transaction;
+    const categoryIndex = result.findIndex(item => item.category === category);
+    if (categoryIndex !== -1) {
+      result[categoryIndex].totalSpent += price;
+    } else {
+      result.push({ category, totalSpent: price });
+    }
+    return result;
+  }, [])
 }
 
 module.exports = calculateTotalSpentByCategory;
