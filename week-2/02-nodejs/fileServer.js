@@ -18,4 +18,45 @@ const path = require('path');
 const app = express();
 
 
+const location = path.join(__dirname, 'files');
+app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+})
+
+// get details of all filenames
+app.get('/files', async (req, res) => {
+  fs.readdir(location, (err, files) => {
+    // check if it is a file or directory
+    if (err) {
+      res.status(500).send('Internal Server Error');
+    }
+    else {
+      // console.log(files)
+      res.status(200).send(files);
+    }
+  })
+})
+
+// get details inside a particular file
+app.get('/file/:filename', async (req, res) => {
+  const filename = req.params.filename;
+  fs.readFile(path.join(location, filename), 'utf-8', (err, data) => {
+    if (err) {
+      res.status(404).send('File not found');
+    } else {
+      res.status(200).send(data);
+    }
+  })
+})
+
+// any other route
+app.all('*', (req, res) => {
+  res.status(404).send('Route not found');
+})
+
+// app.listen(3000)
+
+
 module.exports = app;

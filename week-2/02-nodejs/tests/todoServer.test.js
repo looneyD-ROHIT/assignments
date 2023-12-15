@@ -1,7 +1,7 @@
 const http = require('http');
 const { v4: uuidv4 } = require('uuid');
 
-const server = require('../todoServer');
+const server = require('../todoServerFile');
 const port = 3000;
 const baseUrl = `http://localhost:${port}`;
 
@@ -11,7 +11,7 @@ describe('Todo API', () => {
 
   beforeAll((done) => {
     if (globalServer) {
-        globalServer.close();
+      globalServer.close();
     }
     globalServer = server.listen(3000);
     done()
